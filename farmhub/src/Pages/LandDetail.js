@@ -158,7 +158,7 @@ export default function LandDetail({ land, onBack }) {
   const mapCenter = hasCoords ? [land.latitude, land.longitude] : [-1.2921, 36.8219];
 
   return (
-    <div className="ld-root">
+    <div className="ld-root" style={{ marginTop: '90px' }}>
       <ProfilePanel isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
 
       {/* ── PAYMENT POPUP ── */}
