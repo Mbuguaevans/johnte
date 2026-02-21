@@ -391,66 +391,56 @@
 @media (max-width: 950px) {
   .auth-container {
     padding: 10px;
-    align-items: center; 
+    align-items: flex-start; 
     min-height: 100vh;
     height: auto;
+    overflow-y: auto;
   }
 
   .auth-cont {
     width: 100%;
-    max-width: 450px; /* Standard mobile form width */
+    max-width: 450px; 
     height: auto;
-    min-height: 500px;
-    position: relative;
-    display: block;
-    overflow: visible; /* Allow content to grow */
-    padding-bottom: 20px;
+    min-height: 550px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    background: #fff;
   }
 
-  /* Force both forms to be simple blocks */
+  /* When in mobile mode, forms are simple blocks */
   .auth-form {
     width: 100% !important;
     height: auto !important;
-    position: static !important;
-    padding: 20px !important;
+    padding: 25px !important;
+    position: relative !important;
     transform: none !important;
     transition: none !important;
-  }
-
-  /* THE CRITICAL FIX: Hide the form that isn't active */
-  .auth-sign-in {
-    display: block;
-  }
-  .auth-cont.s--signup .auth-sign-in {
-    display: none !important;
-  }
-
-  .auth-sign-up {
-    display: none !important;
-  }
-  .auth-cont.s--signup .auth-sign-up {
-    display: block !important;
-    transform: none !important;
+    overflow: visible !important;
   }
 
   .auth-sub-cont {
-    position: static !important;
+    position: relative !important;
+    left: 0 !important;
     width: 100% !important;
     height: auto !important;
     padding-left: 0 !important;
     transform: none !important;
-    background: #fff !important;
+    background: transparent !important;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Side panel image text - move to top and simplify */
   .auth-img {
     position: relative !important;
     width: 100% !important;
-    height: 150px !important;
+    height: 160px !important;
     padding-top: 0 !important;
+    order: -1;
     display: flex !important;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 
   .auth-img:before {
@@ -460,56 +450,50 @@
   }
 
   .auth-img__text {
-    position: absolute !important;
-    top: 20px !important;
+    position: relative !important;
+    top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     transform: none !important;
     opacity: 1 !important;
-    padding: 0 10px !important;
+    padding: 15px !important;
   }
 
   .auth-img__text h2 {
-    font-size: 20px !important;
-    margin-bottom: 5px !important;
+    font-size: 22px !important;
+    margin-bottom: 10px !important;
   }
 
-  .auth-img__text p {
-    font-size: 13px !important;
-  }
-
-  /* The toggle button on mobile */
   .auth-img__btn {
-    position: relative !important;
-    bottom: -40px !important;
-    left: auto !important;
-    transform: none !important;
-    margin: 0 auto !important;
+    position: absolute !important;
+    bottom: 15px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     z-index: 10 !important;
-    background: #28a745 !important;
-    border-radius: 30px !important;
-    height: 35px !important;
-    width: 120px !important;
+    background: rgba(255,255,255,0.2) !important;
+    border: 1px solid #fff !important;
+    border-radius: 20px !important;
+    width: 110px !important;
+    height: 32px !important;
   }
 
-  .auth-img__btn:after {
-    display: none; /* Remove the white border on mobile */
-  }
-
-  .auth-img__btn span {
-    position: static !important;
-    font-size: 13px !important;
-  }
+  .auth-img__btn:after { display: none; }
+  .auth-img__btn span { font-size: 12px !important; }
 
   .auth-label {
     width: 100% !important;
     margin: 15px auto 0 !important;
   }
 
+  .auth-input, .auth-select {
+    font-size: 15px !important;
+    padding: 10px 0 !important;
+  }
+
   .auth-submit {
     width: 100% !important;
-    margin-top: 25px !important;
-    height: 45px !important;
+    margin-top: 30px !important;
+    height: 48px !important;
   }
 
   .auth-row {
@@ -517,12 +501,10 @@
     gap: 0;
   }
 
-  /* Fix for the "Sign Up" text being sticky/hidden */
-  .auth-sign-up h2 {
-    position: static !important;
-    padding-top: 0 !important;
+  .auth-sign-up h2, .auth-sign-in h2 {
+    font-size: 26px !important;
     margin-bottom: 20px !important;
-    font-size: 24px !important;
+    position: static !important;
   }
 }
 
