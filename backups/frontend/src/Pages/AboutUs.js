@@ -50,33 +50,10 @@ const MILESTONES = [
 export default function AboutUs() {
   const [activeMilestone, setActiveMilestone] = useState(null);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("access_token");
-    window.location.href = "/login";
-  };
-
   return (
-    <div className="ab-root">
+    <div className="ab-root" style={{ marginTop: '80px' }}>
 
-      {/* ── NAV ── */}
-      <header className="ab-nav">
-        <div className="ab-nav-inner">
-          <a href="/listings" className="ab-brand">
-            <div className="ab-brand-icon">🌿</div>
-            <span className="ab-brand-name">FarmHub</span>
-          </a>
-          <nav className="ab-nav-links">
-            <a href="/listings">Marketplace</a>
-            <a href="/investments">Investment Plans</a>
-            <a href="/agritech">Agri-Tech</a>
-            <a href="/about" className="active">About Us</a>
-          </nav>
-          <div className="ab-nav-right">
-            <a href="/listings" className="ab-nav-btn">Browse Land</a>
-            <div className="ab-avatar" onClick={handleLogout} title="Logout">U</div>
-          </div>
-        </div>
-      </header>
+      {/* Navbar is now handled in App.js for this route */}
 
       {/* ── HERO ── */}
       <section className="ab-hero">
@@ -246,7 +223,6 @@ export default function AboutUs() {
           </div>
           <div className="ab-cta-actions">
             <a href="/listings" className="ab-cta-btn-primary">Browse Land Listings</a>
-            <a href="/investments" className="ab-cta-btn-ghost">View Investment Plans →</a>
           </div>
         </div>
       </section>
@@ -257,7 +233,7 @@ export default function AboutUs() {
           <div>
             <div className="ab-footer-brand">
               <div className="ab-footer-icon">🌿</div>
-              <span className="ab-footer-name">FarmHub</span>
+              <span className="at-footer-name">FarmHub</span>
             </div>
             <p className="ab-footer-desc">
               Kenya's leading agricultural land leasing and investment platform. Connecting landowners with tenants since 2021.
@@ -266,8 +242,7 @@ export default function AboutUs() {
           <div className="ab-footer-col">
             <h4>Platform</h4>
             <a href="/listings">Marketplace</a>
-            <a href="/investments">Investment Plans</a>
-            <a href="/agritech">Agri-Tech</a>
+            <a href="/about">About Us</a>
           </div>
           <div className="ab-footer-col">
             <h4>Company</h4>

@@ -15,7 +15,7 @@ function HeroSection() {
   };
 
   return (
-    <section className="text-white" style={heroStyle}>
+    <section id="home" className="text-white" style={heroStyle}>
       <Container>
         <Row className="justify-content-start align-items-center">
           <Col lg={6} md={8} className="ps-lg-5 text-start">

@@ -9,10 +9,37 @@
   position: fixed;
   top: 0;
   width: 100%;
-  background: white;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 15px 0;
+  transition: all 0.3s ease;
+}
+
+.sticky-header.transparent {
+  background: transparent;
+  box-shadow: none;
+}
+
+.sticky-header.scrolled {
+  background: white;
   padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sticky-header.transparent .logo,
+.sticky-header.transparent .material-symbols-outlined.text-white {
+  color: white !important;
+}
+
+.sticky-header.scrolled .logo {
+  color: #294821;
+}
+
+.nav-links.links-white a {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.nav-links.links-white a:hover {
+  color: #fff !important;
 }
 
 .header-container {

@@ -9,7 +9,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark text-white pt-5 pb-4">
+    <footer id="contact" className="bg-dark text-white pt-5 pb-4">
       <Container>
         <Row>
           {/* Brand & Description */}

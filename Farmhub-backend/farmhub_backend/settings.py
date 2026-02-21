@@ -32,7 +32,9 @@ SECRET_KEY = 'django-insecure-y&f-#b2f89u@rjz#e#aa3b%qrw&ca!%yvx(sku&mfh4=ons)-)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mbuguaevans1.pythonanywhere.com', 'localhost', '127.0.0.1']
+
+CSRF_TRUSTED_ORIGINS = ['https://mbuguaevans1.pythonanywhere.com']
 
 # Application definition
 INSTALLED_APPS = [

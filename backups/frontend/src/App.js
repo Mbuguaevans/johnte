@@ -7,10 +7,9 @@ import NavbarComponent from "./Components/Navbar/Navbar";
 import AuthForm from "./Components/Section4/AuthForm";
 import LandingPage from "./Pages/LandingPage";
 import Listings from "./Pages/listing";
-import InvestmentPlans from "./Pages/InvestmentPlans";
-import AgriTech from "./Pages/AgriTech";
 import AboutUs from "./Pages/AboutUs";
 import AddLand from "./Pages/AddLand";
+import ProfilePanel from "./Pages/ProfilePanel";
 
 // Auth logic
 const PrivateRoute = ({ children }) => {
@@ -35,20 +34,28 @@ const LandownerRoute = ({ children }) => {
 };
 
 function App() {
+  const [profileOpen, setProfileOpen] = React.useState(false);
+
   return (
     <Router>
       <div className="App">
+        <ProfilePanel isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
         <Routes>
-          {/* HOME */}
+          {/* HOME - Only for guests */}
           <Route path="/" element={
-              <LandingPage />
+            <PublicRoute>
+              <>
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
+                <LandingPage />
+              </>
+            </PublicRoute>
           } />
 
           {/* AUTH ROUTES */}
           <Route path="/login" element={
             <PublicRoute>
               <>
-                <NavbarComponent />
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
                 <AuthForm />
               </>
             </PublicRoute>
@@ -57,7 +64,7 @@ function App() {
           <Route path="/register" element={
             <PublicRoute>
               <>
-                <NavbarComponent />
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
                 <AuthForm initialMode="signup" />
               </>
             </PublicRoute>
@@ -66,31 +73,30 @@ function App() {
           {/* PROTECTED ROUTES */}
           <Route path="/listings" element={
             <PrivateRoute>
-              <Listings />
+              <>
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
+                <Listings />
+              </>
             </PrivateRoute>
           } />
 
           <Route path="/add-land" element={
             <LandownerRoute>
               <>
-                <NavbarComponent />
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
                 <AddLand />
               </>
             </LandownerRoute>
           } />
 
-          <Route path="/investments" element={
+          <Route path="/about" element={
             <PrivateRoute>
-              <InvestmentPlans />
+              <>
+                <NavbarComponent onProfileClick={() => setProfileOpen(true)} />
+                <AboutUs />
+              </>
             </PrivateRoute>
           } />
-
-          <Route path="/agritech" element={
-            <PrivateRoute>
-              <AgriTech />
-            </PrivateRoute>
-          } />
-          <Route path="/about" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
 
           {/* 404 - Redirect to home */}
           <Route path="*" element={<Navigate to="/" />} />

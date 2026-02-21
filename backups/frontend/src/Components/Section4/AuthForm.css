@@ -15,8 +15,12 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f8f9fa;
   padding: 20px;
+  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* Main Auth box */

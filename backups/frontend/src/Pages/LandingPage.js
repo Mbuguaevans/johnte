@@ -68,48 +68,6 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {/* Header */}
-      <header className="sticky-header">
-        <div className="header-container container">
-          <div className="logo-area" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <span className="material-symbols-outlined text-green">agriculture</span>
-            <h1 className="logo">FarmHub</h1>
-          </div>
-          <nav className="nav-links d-none d-md-flex">
-            <a href="#" onClick={e => { e.preventDefault(); handleFindLand(); }}>Find Land</a>
-            {user?.user_type === 'landowner' && (
-              <a href="#" onClick={e => { e.preventDefault(); handleListLand(); }}>List Land</a>
-            )}
-            <a href="/about" onClick={e => { e.preventDefault(); navigate('/about'); }}>About</a>
-            <a href="#" onClick={e => e.preventDefault()}>Contact</a>
-          </nav>
-          <div className="header-right">
-            {isLoggedIn ? (
-              <div className="user-profile-area">
-                <div className="avatar-circle-small">
-                  {avatar ? (
-                    <img src={avatar} alt={user?.name || "Profile"} className="avatar-img" />
-                  ) : (
-                    <span className="avatar-initials-small">{getInitials(user?.name || user?.username)}</span>
-                  )}
-                </div>
-                <div className="profile-labels d-none d-sm-flex">
-                  <span className="profile-name">{user?.first_name || user?.username}</span>
-                </div>
-                <button className="btn-signup btn-sm ms-2" onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <>
-                <button className="btn-login d-none d-sm-block" onClick={handleLogin}>Login</button>
-                <button className="btn-signup" onClick={handleSignUp}>Sign Up</button>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
-
       <HeroSection />
       <LandingFeatures />
       <Footer />

@@ -68,8 +68,9 @@ def listing_list(request):
         lands = lands.filter(size_acres__lte=max_acres)
 
     sort = request.query_params.get('sort', 'newest')
-    if sort == 'price-asc':  lands = lands.order_by('price_kes')
-    if sort == 'price-desc': lands = lands.order_by('-price_kes')
+    if sort == 'price_low':  lands = lands.order_by('price_kes')
+    if sort == 'price_high': lands = lands.order_by('-price_kes')
+    if sort == 'size':       lands = lands.order_by('-size_acres')
     if sort == 'newest':     lands = lands.order_by('-created_at')
 
     serializer = LandSerializer(lands, many=True, context={'request': request})
@@ -220,14 +221,19 @@ def close_auction(request, land_id):
             
             # Send email
             print(f"DEBUG: Attempting to send email to {leading_bid.bidder.email}")
-            send_winner_email(
-                leading_bid.bidder.email,
-                leading_bid.bidder.get_full_name() or leading_bid.bidder.username,
-                land.title,
-                leading_bid.amount_kes
-            )
-            print("DEBUG: Email function executed.")
-            return Response({'message': 'Winner notified and auction closed'})
+            try:
+                send_winner_email(
+                    leading_bid.bidder.email,
+                    leading_bid.bidder.get_full_name() or leading_bid.bidder.username,
+                    land.title,
+                    leading_bid.amount_kes
+                )
+                email_status = "Winner notified"
+            except Exception as mail_err:
+                print(f"DEBUG: Email failed: {str(mail_err)}")
+                email_status = "Database updated, but email failed to send"
+
+            return Response({'message': f'{email_status} and auction closed'})
         
         return Response({'message': 'No bids found'})
     except Exception as e:

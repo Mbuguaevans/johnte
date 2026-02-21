@@ -65,62 +65,8 @@ export default function Listings() {
   }
 
   return (
-    <div className="listings-root">
+    <div className="listings-root" style={{ marginTop: '80px' }}>
       <ProfilePanel isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
-
-      {/* ─── NAV ─── */}
-      <nav className="l-nav">
-        <div className="l-nav-inner">
-          <a href="/" className="l-brand">
-            <div className="l-brand-icon">🌿</div>
-            <span className="l-brand-name">FarmHub</span>
-          </a>
-
-          <div className="l-nav-links d-none d-lg-flex">
-            <a href="/listings" className="active">Marketplace</a>
-            <a href="/investments">Investments</a>
-            <a href="/agritech">Agri-Tech</a>
-            <a href="/about">About Us</a>
-          </div>
-
-          <div className="l-nav-right">
-            <div className="l-search d-none d-md-flex">
-              <span className="material-symbols-outlined">search</span>
-              <input 
-                type="text" 
-                placeholder="Search farms, counties..." 
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && fetchListings()}
-              />
-            </div>
-            
-            <button className="l-icon-btn">
-              <span className="material-symbols-outlined">notifications</span>
-              <div className="notif-dot"></div>
-            </button>
-
-            {user.user_type === 'landowner' && (
-              <button className="l-btn-primary d-none d-sm-block" onClick={() => window.location.href='/add-land'}>
-                + List Land
-              </button>
-            )}
-
-            <div className="l-profile-btn" onClick={() => setProfileOpen(true)}>
-              <div className="l-profile-avatar">
-                {user.profile_pic ? (
-                  <img src={`http://localhost:8000${user.profile_pic}`} alt="" className="w-100 h-100 rounded-circle" />
-                ) : (user.first_name || user.username || 'U')[0].toUpperCase()}
-              </div>
-              <div className="l-profile-info d-none d-md-flex">
-                <span className="l-profile-name">{user.first_name || user.username}</span>
-                <span className="l-profile-role">{user.user_type || 'User'}</span>
-              </div>
-              <span className="material-symbols-outlined l-profile-chevron">expand_more</span>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* ─── MAIN ─── */}
       <main className="l-main">
@@ -203,6 +149,23 @@ export default function Listings() {
 
         {/* CONTENT AREA */}
         <div className="l-content">
+          {/* SEARCH BOX FOR MARKETPLACE */}
+          <div className="top-bar mb-4">
+             <div className="l-search flex-grow-1 me-3">
+                <span className="material-symbols-outlined">search</span>
+                <input 
+                  type="text" 
+                  placeholder="Search farms, counties..." 
+                  className="border-0 w-100"
+                  style={{outline: 'none'}}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && fetchListings()}
+                />
+              </div>
+              <button className="btn btn-success fw-bold px-4" onClick={fetchListings}>Search</button>
+          </div>
+
           <div className="top-bar">
             <div className="results-info">
               <span className="results-count">Showing <strong>{lands.length}</strong> fertile parcels</span>
@@ -235,10 +198,10 @@ export default function Listings() {
           ) : (
             <div className="listings-grid">
               {lands.length === 0 ? (
-                <div className="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
+                <div className="col-12 text-center py-5 bg-white rounded-4 shadow-sm w-100">
                   <span className="material-symbols-outlined display-1 text-muted">agriculture</span>
                   <h3 className="mt-3">No farms match your filters</h3>
-                  <p className="text-muted">Try adjusting your price range or county.</p>
+                  <p className="text-muted">Try adjusting your land size or county.</p>
                 </div>
               ) : (
                 lands.map((land) => (
@@ -265,6 +228,8 @@ export default function Listings() {
                         {land.has_water && <span className="card-tag">Water</span>}
                         {land.has_electricity && <span className="card-tag">Power</span>}
                         {land.has_road_access && <span className="card-tag">Road</span>}
+                        {land.has_fencing && <span className="card-tag">Fenced</span>}
+                        {land.has_irrigation && <span className="card-tag">Irrigation</span>}
                       </div>
                       <button className="card-cta">
                         Place Bid <span className="material-symbols-outlined small">gavel</span>
