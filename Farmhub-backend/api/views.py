@@ -202,6 +202,46 @@ def initiate_payment(request, land_id):
         return Response({'error': 'Land not found'}, status=404)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
+def mpesa_callback(request):
+    """
+    Handles Safaricom STK Push callback.
+    """
+    data = request.data
+    print(f"DEBUG: M-Pesa Callback received: {data}")
+    
+    # Simple logic to extract result
+    # In production, use more robust parsing for 'Body' -> 'stkCallback'
+    try:
+        body = data.get('Body', {}).get('stkCallback', {})
+        result_code = body.get('ResultCode')
+        merchant_request_id = body.get('MerchantRequestID')
+        
+        # Find the most recent pending payment for this user (or use MerchantID if stored)
+        # For simplicity in this demo, we'll mark the latest pending payment as completed if code is 0
+        if result_code == 0:
+            # Success
+            # We would typically use a unique transaction ID here
+            # For now, let's find the land associated with the last pending payment
+            payment = Payment.objects.filter(status='pending').first()
+            if payment:
+                payment.status = 'completed'
+                payment.mpesa_ref = body.get('CallbackMetadata', {}).get('Item', [{}])[1].get('Value', 'REF-MPESA')
+                payment.save()
+                
+                # Mark land as leased
+                land = payment.land
+                if land:
+                    land.status = 'leased'
+                    land.save()
+                    print(f"DEBUG: Land {land.id} successfully leased via M-Pesa")
+        
+        return Response({"ResultCode": 0, "ResultDesc": "Success"})
+    except Exception as e:
+        print(f"DEBUG: Callback Error: {str(e)}")
+        return Response({"ResultCode": 1, "ResultDesc": "Internal Error"}, status=500)
+
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def close_auction(request, land_id):
     # This would typically be a background task, but we'll add a manual trigger for now

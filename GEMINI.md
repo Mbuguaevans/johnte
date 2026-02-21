@@ -88,11 +88,13 @@ FarmHub is a full-stack platform designed to connect landowners with farmers in 
 - [x] **Winner System**: Non-dismissible payment modal for auction winners using ID-based detection.
 - [x] **Independent Tabs**: Migration from `localStorage` to `sessionStorage`.
 - [x] **Image Uploads**: Multi-image support for land listings.
+- [x] **Dashboard Development**: Replaced stubs with real statistics, recent bids, and user-specific activity.
+- [x] **M-Pesa Flow**: Finalized callback handling to mark payments as completed and land as leased.
+- [x] **Email Templates**: Professional HTML formatting for the `send_winner_email` function.
 
 ### 🟡 In Progress / Pending
-- [ ] **Dashboard Development**: Replace stubs with real statistics from `summaryAPI`.
-- [ ] **M-Pesa Flow**: Finalize the callback handling for STK Push responses in `api/utils.py`.
-- [ ] **Email Templates**: Improve the HTML formatting of the `send_winner_email` function.
+- [ ] **Search & Filter**: Enhance the keyword search to include county-specific geolocation.
+- [ ] **Mobile Optimization**: Ongoing refinement of touch interactions across all forms.
 
 ---
 

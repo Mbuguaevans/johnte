@@ -12,6 +12,7 @@ urlpatterns = [
     path('bids/land/<int:land_id>/', views.land_bids,      name='land-bids'),
     path('payments/mine/',           views.my_payments,    name='my-payments'),
     path('payments/initiate/<int:land_id>/', views.initiate_payment, name='initiate-payment'),
+    path('payments/callback/',       views.mpesa_callback, name='mpesa-callback'),
     path('listings/close/<int:land_id>/',    views.close_auction,    name='close-auction'),
     path('summary/',                 views.my_summary,     name='my-summary'),
 ]
