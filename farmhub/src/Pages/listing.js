@@ -10,6 +10,38 @@ const COUNTIES = [
   "Nyeri", "Muranga", "Kericho", "Bomet", "Kakamega", "Bungoma"
 ];
 
+const CountdownTimer = ({ expiryDate }) => {
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    if (!expiryDate) return;
+    const interval = setInterval(() => {
+      const end = new Date(expiryDate).getTime();
+      const now = new Date().getTime();
+      const diff = end - now;
+
+      if (diff <= 0) {
+        setTimeLeft("CLOSED");
+        clearInterval(interval);
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        setTimeLeft(`${days}d ${hours}h ${mins}m ${secs}s`);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [expiryDate]);
+
+  return (
+    <div className="card-timer">
+      <span className="material-symbols-outlined small me-1">schedule</span>
+      {timeLeft || "Loading..."}
+    </div>
+  );
+};
+
 export default function Listings() {
   const [lands, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -209,6 +241,7 @@ export default function Listings() {
                     <div className="card-img-wrap">
                       <img src={land.images?.[0] || 'https://placehold.co/600x400?text=FarmHub+Land'} alt={land.title} />
                       <div className="card-badge badge-featured">Verified</div>
+                      <CountdownTimer expiryDate={land.auction_ends_at} />
                       <button className="card-fav" onClick={(e) => { e.stopPropagation(); }}>
                         <span className="material-symbols-outlined">favorite</span>
                       </button>

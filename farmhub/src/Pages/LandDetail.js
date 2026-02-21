@@ -193,8 +193,8 @@ export default function LandDetail({ land, onBack }) {
             </div>
           </div>
           <div className="ld-nav-right">
-            <div className={`timer-badge ${isExpired ? 'bg-danger' : 'bg-dark'} text-white px-3 py-1 rounded-pill small fw-bold`}>
-              {isExpired ? "AUCTION ENDED" : `⏱ ${timeLeft}`}
+            <div className={`timer-badge ${isExpired || timeLeft === 'CLOSED' ? 'bg-danger' : 'bg-dark'} text-white px-3 py-1 rounded-pill small fw-bold`}>
+              {isExpired || timeLeft === 'CLOSED' ? "AUCTION ENDED" : `⏱ ${timeLeft || 'Loading...'}`}
             </div>
             <button className="ld-profile-btn" onClick={() => !showPaymentModal && setProfileOpen(true)} disabled={showPaymentModal} style={{ opacity: showPaymentModal ? 0.5 : 1, cursor: showPaymentModal ? 'not-allowed' : 'pointer' }}>
               <div className="ld-profile-avatar">{getInitials(user.first_name || user.username || "U")}</div>
