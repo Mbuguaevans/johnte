@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './AuthForm.css';
 
@@ -15,15 +15,6 @@ const AuthForm = ({ initialMode = 'login' }) => {
   const [success, setSuccess]         = useState('');
   const [photoPreview, setPhotoPreview] = useState(null);
   const photoRef                      = useRef(null);
-  
-  // Track window width for conditional mobile rendering
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 950);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // ── LOGIN STATE ──
   const [loginData, setLoginData] = useState({
@@ -161,29 +152,22 @@ const AuthForm = ({ initialMode = 'login' }) => {
 
   return (
     <div className="auth-container">
-      <div className={`auth-cont ${isSignUp ? 's--signup' : ''} ${isMobile ? 'm-view' : ''}`}>
-        
-        {/* Only render SignIn if not SignUp OR if on Desktop (where both must exist for slide) */}
-        {(!isSignUp || !isMobile) && (
-          <form className="auth-form auth-sign-in" onSubmit={handleLogin}>
-            <h2>Welcome Back!</h2>
-            <div className="auth-label">
-              <span>Username</span>
-              <input className="auth-input" type="text" name="username" value={loginData.username} onChange={handleLoginChange} required placeholder="Enter your username" />
-            </div>
-            <div className="auth-label">
-              <span>Password</span>
-              <input className="auth-input" type="password" name="password" value={loginData.password} onChange={handleLoginChange} required placeholder="••••••••" />
-            </div>
-            <p className="auth-forgot-pass">Forgot password?</p>
-            <button type="submit" className="auth-btn auth-submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</button>
-            <div className="auth-error">{error && !isSignUp && error}</div>
-            <div className="auth-success">{success && !isSignUp && success}</div>
-            {isMobile && (
-              <p className="text-center mt-3">New to FarmHub? <button type="button" className="btn btn-link p-0 text-success fw-bold" onClick={toggleForm}>Sign Up</button></p>
-            )}
-          </form>
-        )}
+      <div className={`auth-cont ${isSignUp ? 's--signup' : ''}`}>
+        <form className="auth-form auth-sign-in" onSubmit={handleLogin}>
+          <h2>Welcome Back!</h2>
+          <div className="auth-label">
+            <span>Username</span>
+            <input className="auth-input" type="text" name="username" value={loginData.username} onChange={handleLoginChange} required placeholder="Enter your username" />
+          </div>
+          <div className="auth-label">
+            <span>Password</span>
+            <input className="auth-input" type="password" name="password" value={loginData.password} onChange={handleLoginChange} required placeholder="••••••••" />
+          </div>
+          <p className="auth-forgot-pass">Forgot password?</p>
+          <button type="submit" className="auth-btn auth-submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</button>
+          <div className="auth-error">{error && !isSignUp && error}</div>
+          <div className="auth-success">{success && !isSignUp && success}</div>
+        </form>
 
         <div className="auth-sub-cont">
           <div className="auth-img">
@@ -201,51 +185,45 @@ const AuthForm = ({ initialMode = 'login' }) => {
             </button>
           </div>
 
-          {/* Only render SignUp if isSignUp OR if on Desktop */}
-          {(isSignUp || !isMobile) && (
-            <form className="auth-form auth-sign-up" onSubmit={handleRegister}>
-              <h2>Create Account</h2>
-              <div className="auth-photo-wrap">
-                <div className="auth-photo-circle" onClick={() => photoRef.current.click()} title="Click to upload photo">
-                  {photoPreview ? <img src={photoPreview} alt="Preview" className="auth-photo-preview" /> : <div className="auth-photo-placeholder"><span>📷</span><p>Add Photo</p></div>}
-                </div>
-                <input type="file" accept="image/*" ref={photoRef} onChange={handlePhotoChange} style={{ display: 'none' }} />
+          <form className="auth-form auth-sign-up" onSubmit={handleRegister}>
+            <h2>Create Account</h2>
+            <div className="auth-photo-wrap">
+              <div className="auth-photo-circle" onClick={() => photoRef.current.click()} title="Click to upload photo">
+                {photoPreview ? <img src={photoPreview} alt="Preview" className="auth-photo-preview" /> : <div className="auth-photo-placeholder"><span>📷</span><p>Add Photo</p></div>}
               </div>
-              <div className="auth-row">
-                <div className="auth-label"><span>First Name</span><input className="auth-input" type="text" name="first_name" value={registerData.first_name} onChange={handleRegisterChange} required placeholder="John" /></div>
-                <div className="auth-label"><span>Last Name</span><input className="auth-input" type="text" name="last_name" value={registerData.last_name} onChange={handleRegisterChange} required placeholder="Gitahi" /></div>
-              </div>
-              <div className="auth-label"><span>Username</span><input className="auth-input" type="text" name="username" value={registerData.username} onChange={handleRegisterChange} required placeholder="Choose a username" /></div>
-              <div className="auth-label"><span>Email</span><input className="auth-input" type="email" name="email" value={registerData.email} onChange={handleRegisterChange} required placeholder="your@email.com" /></div>
-              <div className="auth-row">
-                <div className="auth-label"><span>Password</span><input className="auth-input" type="password" name="password" value={registerData.password} onChange={handleRegisterChange} required minLength="8" placeholder="Min 8 chars" /></div>
-                <div className="auth-label"><span>Confirm Password</span><input className="auth-input" type="password" name="password2" value={registerData.password2} onChange={handleRegisterChange} required placeholder="Re-enter" /></div>
-              </div>
+              <input type="file" accept="image/*" ref={photoRef} onChange={handlePhotoChange} style={{ display: 'none' }} />
+            </div>
+            <div className="auth-row">
+              <div className="auth-label"><span>First Name</span><input className="auth-input" type="text" name="first_name" value={registerData.first_name} onChange={handleRegisterChange} required placeholder="John" /></div>
+              <div className="auth-label"><span>Last Name</span><input className="auth-input" type="text" name="last_name" value={registerData.last_name} onChange={handleRegisterChange} required placeholder="Gitahi" /></div>
+            </div>
+            <div className="auth-label"><span>Username</span><input className="auth-input" type="text" name="username" value={registerData.username} onChange={handleRegisterChange} required placeholder="Choose a username" /></div>
+            <div className="auth-label"><span>Email</span><input className="auth-input" type="email" name="email" value={registerData.email} onChange={handleRegisterChange} required placeholder="your@email.com" /></div>
+            <div className="auth-row">
+              <div className="auth-label"><span>Password</span><input className="auth-input" type="password" name="password" value={registerData.password} onChange={handleRegisterChange} required minLength="8" placeholder="Min 8 chars" /></div>
+              <div className="auth-label"><span>Confirm Password</span><input className="auth-input" type="password" name="password2" value={registerData.password2} onChange={handleRegisterChange} required placeholder="Re-enter" /></div>
+            </div>
+            <div className="auth-label">
+              <span>I am a</span>
+              <select className="auth-input auth-select" name="user_type" value={registerData.user_type} onChange={handleRegisterChange}>
+                <option value="farmer">🌾 Farmer (Looking for land)</option>
+                <option value="landowner">🏡 Land Owner (Have land to lease)</option>
+              </select>
+            </div>
+            <div className="auth-row">
+              <div className="auth-label"><span>Phone</span><input className="auth-input" type="tel" name="phone" value={registerData.phone} onChange={handleRegisterChange} placeholder="+254 7XX XXX XXX" /></div>
               <div className="auth-label">
-                <span>I am a</span>
-                <select className="auth-input auth-select" name="user_type" value={registerData.user_type} onChange={handleRegisterChange}>
-                  <option value="farmer">🌾 Farmer (Looking for land)</option>
-                  <option value="landowner">🏡 Land Owner (Have land to lease)</option>
+                <span>County</span>
+                <select className="auth-input auth-select" name="county" value={registerData.county} onChange={handleRegisterChange}>
+                  <option value="">Select county</option>
+                  {COUNTIES.map((c) => <option key={c} value={c.toLowerCase()}>{c}</option>)}
                 </select>
               </div>
-              <div className="auth-row">
-                <div className="auth-label"><span>Phone</span><input className="auth-input" type="tel" name="phone" value={registerData.phone} onChange={handleRegisterChange} placeholder="+254 7XX XXX XXX" /></div>
-                <div className="auth-label">
-                  <span>County</span>
-                  <select className="auth-input auth-select" name="county" value={registerData.county} onChange={handleRegisterChange}>
-                    <option value="">Select county</option>
-                    {COUNTIES.map((c) => <option key={c} value={c.toLowerCase()}>{c}</option>)}
-                  </select>
-                </div>
-              </div>
-              <button type="submit" className="auth-btn auth-submit" disabled={loading}>{loading ? 'Creating Account...' : 'Sign Up'}</button>
-              <div className="auth-error">{error && isSignUp && error}</div>
-              <div className="auth-success">{success && isSignUp && success}</div>
-              {isMobile && (
-                <p className="text-center mt-3 pb-4">Already have an account? <button type="button" className="btn btn-link p-0 text-success fw-bold" onClick={toggleForm}>Sign In</button></p>
-              )}
-            </form>
-          )}
+            </div>
+            <button type="submit" className="auth-btn auth-submit" disabled={loading}>{loading ? 'Creating Account...' : 'Sign Up'}</button>
+            <div className="auth-error">{error && isSignUp && error}</div>
+            <div className="auth-success">{success && isSignUp && success}</div>
+          </form>
         </div>
       </div>
     </div>
