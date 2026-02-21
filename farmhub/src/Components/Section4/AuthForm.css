@@ -389,37 +389,104 @@
 
 /* Responsive adjustments */
 @media (max-width: 950px) {
+  .auth-container {
+    padding: 10px;
+    align-items: flex-start; /* Better for tall forms on small screens */
+  }
+
   .auth-cont {
-    width: 95%;
+    width: 100%;
     height: auto;
-    min-height: 550px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
   }
-  .auth-form { width: 100%; padding: 40px 20px; }
+
+  .auth-form {
+    width: 100% !important;
+    position: relative !important;
+    transform: none !important;
+    padding: 40px 20px;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Toggle logic for mobile */
+  .auth-sign-in {
+    display: block;
+  }
+  .auth-cont.s--signup .auth-sign-in {
+    display: none;
+  }
+
+  .auth-sign-up {
+    display: none;
+  }
+  .auth-cont.s--signup .auth-sign-up {
+    display: block;
+    transform: none !important;
+  }
+
   .auth-sub-cont {
-    position: relative;
-    left: 0;
-    width: 100%;
-    padding-left: 0;
+    position: relative !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding-left: 0 !important;
+    transform: none !important;
+    display: flex;
+    flex-direction: column;
   }
+
   .auth-img {
-    position: relative;
-    width: 100%;
-    height: 200px;
-    padding-top: 0;
+    position: relative !important;
+    width: 100% !important;
+    height: 180px !important;
+    padding-top: 0 !important;
+    order: -1; /* Move image text to top */
   }
-  .auth-img:before { width: 100%; }
-  .auth-img__text { position: relative; top: 20px; }
-  .auth-img__btn { bottom: 30px; }
-  .auth-sign-up { max-height: 400px; }
-  .auth-sign-up h2 { position: relative; padding-top: 10px; }
+
+  .auth-img:before {
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .auth-img__text {
+    position: relative !important;
+    top: 20px !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .auth-img__btn {
+    bottom: 20px !important;
+  }
+
+  .auth-label {
+    width: 100% !important;
+    margin: 15px auto 0 !important;
+  }
+
+  .auth-submit {
+    width: 100% !important;
+    margin-top: 30px !important;
+  }
+
+  .auth-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
-@media (max-width: 700px) {
-  .auth-row { flex-direction: column; gap: 0; }
-  .auth-label { width: 98%; }
-}
-@media (max-height: 700px) {
-  .auth-cont { height: 500px; }
-  .auth-sign-up .auth-label { margin: 12px auto 0; }
-  .auth-sign-up h2 { margin-bottom: 15px; }
+
+@media (max-width: 480px) {
+  .auth-img__text h2 {
+    font-size: 22px;
+  }
+  .auth-img__text p {
+    font-size: 14px;
+  }
+  .auth-form h2 {
+    font-size: 24px;
+  }
 }
 /* End of FARMHUB Auth CSS */
