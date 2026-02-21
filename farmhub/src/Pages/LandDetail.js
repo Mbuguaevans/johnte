@@ -236,6 +236,26 @@ export default function LandDetail({ land, onBack }) {
             <p className="ld-desc mt-3">{land.description}</p>
           </div>
 
+          {/* Countdown Timer Detail Section */}
+          <div className="ld-section bg-white rounded-4 shadow-sm p-4 mb-4 border-0">
+            <div className="d-flex align-items-center justify-content-between">
+              <div>
+                <h5 className="text-muted text-uppercase small fw-bold mb-1">Time Remaining</h5>
+                <h2 className={`fw-black mb-0 ${isExpired || timeLeft === 'CLOSED' ? 'text-danger' : 'text-success'}`} style={{ fontFamily: 'monospace', letterSpacing: '2px' }}>
+                  {timeLeft || 'Calculating...'}
+                </h2>
+              </div>
+              <div className="text-end">
+                <span className="material-symbols-outlined display-4 text-muted opacity-25">schedule</span>
+              </div>
+            </div>
+            {(isExpired || timeLeft === 'CLOSED') && (
+              <div className="alert alert-danger py-2 px-3 mt-3 mb-0 small fw-bold">
+                ⚠️ This auction has officially ended. No further bids are accepted.
+              </div>
+            )}
+          </div>
+
           {/* Amenities Section */}
           <div className="ld-section">
             <h2 className="ld-section-title">Amenities & Features</h2>
