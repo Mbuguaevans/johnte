@@ -26,11 +26,8 @@ const AuthForm = ({ initialMode = 'login' }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (isMobile) {
-    return <AuthFormMobile initialMode={initialMode} />;
-  }
-
-  // ── LOGIN STATE ──  const [loginData, setLoginData] = useState({
+  // ── LOGIN STATE ──
+  const [loginData, setLoginData] = useState({
     username: '',
     password: '',
   });
@@ -48,6 +45,10 @@ const AuthForm = ({ initialMode = 'login' }) => {
     county:      '',
     profile_pic: null,
   });
+
+  if (isMobile) {
+    return <AuthFormMobile initialMode={initialMode} />;
+  }
 
   // ── HANDLERS ──
   const handleLoginChange = (e) => {
