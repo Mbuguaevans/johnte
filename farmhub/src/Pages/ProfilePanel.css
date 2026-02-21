@@ -7,7 +7,7 @@
   background: rgba(10, 20, 8, 0.45);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 998;
+  z-index: 2000;
   animation: fadeBackdrop 0.25s ease;
 }
 
@@ -24,7 +24,7 @@
   width: 420px;
   height: 100vh;
   background: #faf8f4;
-  z-index: 999;
+  z-index: 2001;
   display: flex;
   flex-direction: column;
   overflow: hidden;
