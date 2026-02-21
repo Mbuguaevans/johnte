@@ -391,75 +391,114 @@
 @media (max-width: 950px) {
   .auth-container {
     padding: 10px;
-    align-items: flex-start; /* Better for tall forms on small screens */
+    align-items: center; 
+    min-height: 100vh;
+    height: auto;
   }
 
   .auth-cont {
     width: 100%;
+    max-width: 450px; /* Standard mobile form width */
     height: auto;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
+    min-height: 500px;
+    position: relative;
+    display: block;
+    overflow: visible; /* Allow content to grow */
+    padding-bottom: 20px;
   }
 
+  /* Force both forms to be simple blocks */
   .auth-form {
     width: 100% !important;
-    position: relative !important;
-    transform: none !important;
-    padding: 40px 20px;
     height: auto !important;
-    overflow: visible !important;
+    position: static !important;
+    padding: 20px !important;
+    transform: none !important;
+    transition: none !important;
   }
 
-  /* Toggle logic for mobile */
+  /* THE CRITICAL FIX: Hide the form that isn't active */
   .auth-sign-in {
     display: block;
   }
   .auth-cont.s--signup .auth-sign-in {
-    display: none;
+    display: none !important;
   }
 
   .auth-sign-up {
-    display: none;
+    display: none !important;
   }
   .auth-cont.s--signup .auth-sign-up {
-    display: block;
+    display: block !important;
     transform: none !important;
   }
 
   .auth-sub-cont {
-    position: relative !important;
-    left: 0 !important;
+    position: static !important;
     width: 100% !important;
     height: auto !important;
     padding-left: 0 !important;
     transform: none !important;
-    display: flex;
-    flex-direction: column;
+    background: #fff !important;
   }
 
+  /* Side panel image text - move to top and simplify */
   .auth-img {
     position: relative !important;
     width: 100% !important;
-    height: 180px !important;
+    height: 150px !important;
     padding-top: 0 !important;
-    order: -1; /* Move image text to top */
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
   }
 
   .auth-img:before {
     width: 100% !important;
+    height: 100% !important;
     transform: none !important;
   }
 
   .auth-img__text {
-    position: relative !important;
+    position: absolute !important;
     top: 20px !important;
+    left: 0 !important;
+    width: 100% !important;
     transform: none !important;
     opacity: 1 !important;
+    padding: 0 10px !important;
   }
 
+  .auth-img__text h2 {
+    font-size: 20px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .auth-img__text p {
+    font-size: 13px !important;
+  }
+
+  /* The toggle button on mobile */
   .auth-img__btn {
-    bottom: 20px !important;
+    position: relative !important;
+    bottom: -40px !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    z-index: 10 !important;
+    background: #28a745 !important;
+    border-radius: 30px !important;
+    height: 35px !important;
+    width: 120px !important;
+  }
+
+  .auth-img__btn:after {
+    display: none; /* Remove the white border on mobile */
+  }
+
+  .auth-img__btn span {
+    position: static !important;
+    font-size: 13px !important;
   }
 
   .auth-label {
@@ -469,24 +508,27 @@
 
   .auth-submit {
     width: 100% !important;
-    margin-top: 30px !important;
+    margin-top: 25px !important;
+    height: 45px !important;
   }
 
   .auth-row {
     flex-direction: column;
     gap: 0;
   }
+
+  /* Fix for the "Sign Up" text being sticky/hidden */
+  .auth-sign-up h2 {
+    position: static !important;
+    padding-top: 0 !important;
+    margin-bottom: 20px !important;
+    font-size: 24px !important;
+  }
 }
 
 @media (max-width: 480px) {
-  .auth-img__text h2 {
-    font-size: 22px;
-  }
-  .auth-img__text p {
-    font-size: 14px;
-  }
-  .auth-form h2 {
-    font-size: 24px;
+  .auth-cont {
+    border-radius: 10px;
   }
 }
 /* End of FARMHUB Auth CSS */
