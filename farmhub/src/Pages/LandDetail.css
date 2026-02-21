@@ -48,18 +48,27 @@
 .ld-nav-left { display: flex; align-items: center; gap: 20px; }
 
 .ld-back-btn {
-  background: var(--green-mist);
-  border: 1px solid var(--border);
+  background: var(--green-deep);
+  border: none;
   border-radius: 100px;
-  padding: 7px 18px;
+  padding: 8px 22px;
   font-family: 'Sora', sans-serif;
-  font-size: 12px; font-weight: 600;
-  color: var(--green-deep);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(26,58,18,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.ld-back-btn:hover { background: var(--green-pale); }
+.ld-back-btn:hover { 
+  background: var(--green-mid);
+  transform: translateX(-3px);
+  box-shadow: 0 6px 16px rgba(26,58,18,0.2);
+}
 
 .ld-breadcrumb {
   display: flex; align-items: center; gap: 6px;
