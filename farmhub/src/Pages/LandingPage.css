@@ -91,32 +91,7 @@
   }
   
   .navbar-toggler .material-symbols-outlined {
-    font-size: 28px;
-  }
-
-  .header-right {
-    display: flex !important;
-    align-items: center;
-    gap: 8px !important;
-  }
-
-  .user-profile-area {
-    padding: 4px 8px !important;
-    background: transparent !important;
-    border: none !important;
-  }
-
-  .sticky-header.scrolled .user-profile-area {
-    background: #f4faf6 !important;
-    border-radius: 12px !important;
-  }
-
-  .sticky-header.transparent .navbar-toggler {
-    color: white !important;
-  }
-
-  .sticky-header.scrolled .navbar-toggler {
-    color: #294821 !important;
+    font-size: 32px;
   }
 }
 
