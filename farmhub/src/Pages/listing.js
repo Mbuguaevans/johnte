@@ -55,6 +55,7 @@ export default function Listings() {
   const [amenities, setAmenities] = useState([]);
   const [sort, setSort] = useState("newest");
   const [viewType, setViewType] = useState("grid"); // grid or list
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
@@ -104,20 +105,27 @@ export default function Listings() {
       <main className="l-main">
         
         {/* SIDEBAR FILTERS */}
-        <aside className="l-aside">
+        <aside className={`l-aside ${mobileFiltersOpen ? 'mobile-open' : ''}`}>
           <div className="l-aside-sticky">
             <div className="filter-panel">
               <div className="filter-header">
                 <span className="filter-title">
                   <span className="material-symbols-outlined">tune</span> Filters
                 </span>
-                <button className="filter-reset" onClick={() => {
-                  setCounty('all');
-                  setMinAcres(1);
-                  setAmenities([]);
-                  setSearch('');
-                }}>Reset</button>
+                <div className="d-flex gap-2">
+                  <button className="filter-reset" onClick={() => {
+                    setCounty('all');
+                    setMinAcres(1);
+                    setAmenities([]);
+                    setSearch('');
+                  }}>Reset</button>
+                  <button className="d-lg-none border-0 bg-transparent" onClick={() => setMobileFiltersOpen(false)}>
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
               </div>
+
+              {/* ... existing filter groups ... */}
 
               <div className="filter-group">
                 <label className="filter-label">Location</label>
@@ -274,6 +282,11 @@ export default function Listings() {
             </div>
           )}
         </div>
+
+        <button className="mobile-filter-btn" onClick={() => setMobileFiltersOpen(true)}>
+          <span className="material-symbols-outlined">tune</span>
+          Filters
+        </button>
       </main>
     </div>
   );

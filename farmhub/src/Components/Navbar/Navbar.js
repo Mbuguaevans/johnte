@@ -41,37 +41,58 @@ const Navbar = ({ onProfileClick }) => {
             <h1 className={`logo ${!isScrolled && isTransparentPage ? 'text-white' : ''}`}>FarmHub</h1>
           </div>
 
-          {/* Navigation Links */}
-          <nav className={`nav-links d-none d-md-flex ${!isScrolled && isTransparentPage ? 'links-white' : ''}`}>
-            {location.pathname === '/' ? (
-              <>
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#contact">Contact</a>
-              </>
-            ) : (
-              <>
-                <a 
-                  href="#" 
-                  className={location.pathname === '/listings' ? 'active' : ''} 
-                  onClick={e => { e.preventDefault(); navigate('/listings'); }}
-                >
-                  Marketplace
-                </a>
-                
-                <a 
-                  href="#" 
-                  className={location.pathname === '/about' ? 'active' : ''} 
-                  onClick={e => { e.preventDefault(); navigate('/about'); }}
-                >
-                  About Us
-                </a>
-              </>
-            )}
-          </nav>
+          {/* Mobile Toggler */}
+          <button 
+            className="navbar-toggler d-md-none border-0 text-white" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#mainNavbarContent"
+            style={{ color: !isScrolled && isTransparentPage ? 'white' : '#294821' }}
+          >
+            <span className="material-symbols-outlined">menu</span>
+          </button>
 
-          {/* User Profile / Auth Area */}
-          <div className="header-right">
+          {/* Navigation Links */}
+          <div className="collapse navbar-collapse d-md-block" id="mainNavbarContent">
+            <nav className={`nav-links flex-column flex-md-row ${!isScrolled && isTransparentPage ? 'links-white' : ''}`}>
+              {location.pathname === '/' ? (
+                <>
+                  <a href="#home">Home</a>
+                  <a href="#features">Features</a>
+                  <a href="#contact">Contact</a>
+                </>
+              ) : (
+                <>
+                  <a 
+                    href="#" 
+                    className={location.pathname === '/listings' ? 'active' : ''} 
+                    onClick={e => { e.preventDefault(); navigate('/listings'); }}
+                  >
+                    Marketplace
+                  </a>
+                  
+                  <a 
+                    href="#" 
+                    className={location.pathname === '/about' ? 'active' : ''} 
+                    onClick={e => { e.preventDefault(); navigate('/about'); }}
+                  >
+                    About Us
+                  </a>
+                </>
+              )}
+              
+              {/* Mobile Only Logout/Profile */}
+              {isLoggedIn && (
+                <div className="d-md-none mt-3 pt-3 border-top">
+                   <a href="#" onClick={(e) => { e.preventDefault(); onProfileClick(); }}>My Profile</a>
+                   <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }} className="text-danger">Logout</a>
+                </div>
+              )}
+            </nav>
+          </div>
+
+          {/* Desktop Right Side Area */}
+          <div className="header-right d-none d-md-flex">
             {isLoggedIn ? (
               <>
                 {userType === 'landowner' && (
