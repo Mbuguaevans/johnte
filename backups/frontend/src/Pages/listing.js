@@ -1,0 +1,282 @@
+import React, { useState, useEffect } from "react";
+import { listingsAPI } from "../api";
+import "./listing.css";
+import LandDetail from "./LandDetail";
+import ProfilePanel from "./ProfilePanel";
+
+const COUNTIES = [
+  "Nairobi", "Mombasa", "Kisumu", "Nakuru", "Kiambu", "Narok",
+  "Laikipia", "Kilifi", "Uasin Gishu", "Machakos", "Kajiado",
+  "Nyeri", "Muranga", "Kericho", "Bomet", "Kakamega", "Bungoma"
+];
+
+export default function Listings() {
+  const [lands, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedLand, setSelectedLand] = useState(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  
+  // Advanced Filters
+  const [search, setSearch] = useState("");
+  const [county, setCounty] = useState("all");
+  const [minAcres, setMinAcres] = useState(1); // Default to 1 acre and above
+  const [amenities, setAmenities] = useState([]);
+  const [sort, setSort] = useState("newest");
+  const [viewType, setViewType] = useState("grid"); // grid or list
+
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+
+  const fetchListings = async () => {
+    setLoading(true);
+    try {
+      const data = await listingsAPI.getAll({
+        search,
+        county,
+        sort,
+        amenities,
+        min_acres: minAcres,
+      });
+      setListings(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchListings();
+  }, [county, sort, amenities, minAcres]);
+
+  const toggleAmenity = (amenity) => {
+    // Toggle amenity in filter list
+    setAmenities(prev => 
+      prev.includes(amenity) ? prev.filter(a => a !== amenity) : [...prev, amenity]
+    );
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.href = '/';
+  };
+
+  if (selectedLand) {
+    return <LandDetail land={selectedLand} onBack={() => { setSelectedLand(null); fetchListings(); }} />;
+  }
+
+  return (
+    <div className="listings-root">
+      <ProfilePanel isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
+
+      {/* ─── NAV ─── */}
+      <nav className="l-nav">
+        <div className="l-nav-inner">
+          <a href="/" className="l-brand">
+            <div className="l-brand-icon">🌿</div>
+            <span className="l-brand-name">FarmHub</span>
+          </a>
+
+          <div className="l-nav-links d-none d-lg-flex">
+            <a href="/listings" className="active">Marketplace</a>
+            <a href="/investments">Investments</a>
+            <a href="/agritech">Agri-Tech</a>
+            <a href="/about">About Us</a>
+          </div>
+
+          <div className="l-nav-right">
+            <div className="l-search d-none d-md-flex">
+              <span className="material-symbols-outlined">search</span>
+              <input 
+                type="text" 
+                placeholder="Search farms, counties..." 
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && fetchListings()}
+              />
+            </div>
+            
+            <button className="l-icon-btn">
+              <span className="material-symbols-outlined">notifications</span>
+              <div className="notif-dot"></div>
+            </button>
+
+            {user.user_type === 'landowner' && (
+              <button className="l-btn-primary d-none d-sm-block" onClick={() => window.location.href='/add-land'}>
+                + List Land
+              </button>
+            )}
+
+            <div className="l-profile-btn" onClick={() => setProfileOpen(true)}>
+              <div className="l-profile-avatar">
+                {user.profile_pic ? (
+                  <img src={`http://localhost:8000${user.profile_pic}`} alt="" className="w-100 h-100 rounded-circle" />
+                ) : (user.first_name || user.username || 'U')[0].toUpperCase()}
+              </div>
+              <div className="l-profile-info d-none d-md-flex">
+                <span className="l-profile-name">{user.first_name || user.username}</span>
+                <span className="l-profile-role">{user.user_type || 'User'}</span>
+              </div>
+              <span className="material-symbols-outlined l-profile-chevron">expand_more</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ─── MAIN ─── */}
+      <main className="l-main">
+        
+        {/* SIDEBAR FILTERS */}
+        <aside className="l-aside">
+          <div className="l-aside-sticky">
+            <div className="filter-panel">
+              <div className="filter-header">
+                <span className="filter-title">
+                  <span className="material-symbols-outlined">tune</span> Filters
+                </span>
+                <button className="filter-reset" onClick={() => {
+                  setCounty('all');
+                  setMinAcres(1);
+                  setAmenities([]);
+                  setSearch('');
+                }}>Reset</button>
+              </div>
+
+              <div className="filter-group">
+                <label className="filter-label">Location</label>
+                <div className="select-wrap">
+                  <select className="filter-select" value={county} onChange={(e) => setCounty(e.target.value)}>
+                    <option value="all">All Counties</option>
+                    {COUNTIES.map(c => <option key={c} value={c.toLowerCase()}>{c}</option>)}
+                  </select>
+                  <span className="material-symbols-outlined select-arrow">expand_more</span>
+                </div>
+              </div>
+
+              <div className="filter-divider"></div>
+
+              <div className="filter-group">
+                <div className="range-header">
+                  <label className="filter-label">Min Land Size (Acres)</label>
+                  <span className="range-val">{minAcres} Acres +</span>
+                </div>
+                <input 
+                  type="range" 
+                  min="1" 
+                  max="200" 
+                  step="1" 
+                  value={minAcres}
+                  onChange={(e) => setMinAcres(e.target.value)}
+                />
+                <div className="range-labels">
+                  <span>1 Acre</span>
+                  <span>200 Acres</span>
+                </div>
+              </div>
+
+              <div className="filter-divider"></div>
+
+              <div className="filter-group">
+                <label className="filter-label">Amenities</label>
+                <div className="amenity-list">
+                  {[
+                    {id: 'has_water', label: 'Water Access', icon: 'water_drop'},
+                    {id: 'has_electricity', label: 'Electricity', icon: 'bolt'},
+                    {id: 'has_road_access', label: 'Road Access', icon: 'add_road'},
+                    {id: 'has_fencing', label: 'Fenced', icon: 'fence'},
+                    {id: 'has_irrigation', label: 'Irrigation', icon: 'shower'}
+                  ].map(item => (
+                    <label className="amenity-item" key={item.id}>
+                      <input 
+                        type="checkbox" 
+                        checked={amenities.includes(item.id)}
+                        onChange={() => toggleAmenity(item.id)}
+                      />
+                      <span className="material-symbols-outlined small">{item.icon}</span>
+                      {item.label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* CONTENT AREA */}
+        <div className="l-content">
+          <div className="top-bar">
+            <div className="results-info">
+              <span className="results-count">Showing <strong>{lands.length}</strong> fertile parcels</span>
+              <div className="view-toggle">
+                <button className={`view-btn ${viewType === 'grid' ? 'active' : ''}`} onClick={() => setViewType('grid')}>
+                  <span className="material-symbols-outlined">grid_view</span>
+                </button>
+                <button className={`view-btn ${viewType === 'list' ? 'active' : ''}`} onClick={() => setViewType('list')}>
+                  <span className="material-symbols-outlined">view_list</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="sort-wrap">
+              <span className="sort-label">Sort by:</span>
+              <select className="sort-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="newest">Newest First</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+                <option value="size">Size: Large to Small</option>
+              </select>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-success"></div>
+              <p className="mt-3">Scanning for best land deals...</p>
+            </div>
+          ) : (
+            <div className="listings-grid">
+              {lands.length === 0 ? (
+                <div className="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
+                  <span className="material-symbols-outlined display-1 text-muted">agriculture</span>
+                  <h3 className="mt-3">No farms match your filters</h3>
+                  <p className="text-muted">Try adjusting your price range or county.</p>
+                </div>
+              ) : (
+                lands.map((land) => (
+                  <div className="l-card" key={land.id} onClick={() => setSelectedLand(land)}>
+                    <div className="card-img-wrap">
+                      <img src={land.images?.[0] || 'https://placehold.co/600x400?text=FarmHub+Land'} alt={land.title} />
+                      <div className="card-badge badge-featured">Verified</div>
+                      <button className="card-fav" onClick={(e) => { e.stopPropagation(); }}>
+                        <span className="material-symbols-outlined">favorite</span>
+                      </button>
+                      <div className="price-ribbon">
+                        <span className="ribbon-price">KES {Number(land.price_kes).toLocaleString()}</span>
+                        <span className="ribbon-size">{land.size_acres} Acres</span>
+                      </div>
+                    </div>
+                    <div className="card-body">
+                      <h3 className="card-title">{land.title}</h3>
+                      <div className="card-location">
+                        <span className="material-symbols-outlined small">location_on</span>
+                        {land.county}, Kenya
+                      </div>
+                      <p className="card-desc">{land.description}</p>
+                      <div className="card-tags">
+                        {land.has_water && <span className="card-tag">Water</span>}
+                        {land.has_electricity && <span className="card-tag">Power</span>}
+                        {land.has_road_access && <span className="card-tag">Road</span>}
+                      </div>
+                      <button className="card-cta">
+                        Place Bid <span className="material-symbols-outlined small">gavel</span>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}

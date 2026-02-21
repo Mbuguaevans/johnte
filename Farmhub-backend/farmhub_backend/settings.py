@@ -9,17 +9,24 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Custom user model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Media (uploads/images)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = 'static/'
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production!
 SECRET_KEY = 'django-insecure-y&f-#b2f89u@rjz#e#aa3b%qrw&ca!%yvx(sku&mfh4=ons)-)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -27,9 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +57,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'farmhub_backend.urls'
@@ -74,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'farmhub_backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -84,7 +87,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -104,23 +106,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
@@ -129,14 +124,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-    ]
-}
-AUTH_USER_MODEL = 'accounts.CustomUser'
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Add this
-    ]
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Add JWT support
+    ],
 }
 
 # JWT settings
@@ -145,3 +134,19 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+# EMAIL CONFIGURATION (Gmail SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kamaumbugua2025@gmail.com'
+EMAIL_HOST_PASSWORD = 'fvmb ydzy sotd mjtd' 
+DEFAULT_FROM_EMAIL = 'FarmHub Kenya <noreply@farmhub.co.ke>'
+
+# M-PESA DARAJA API CONFIG (Sandbox)
+MPESA_CONSUMER_KEY = 'bmb9jIcdKjHeV5D7hb3c1HgQgaNKj673yr1I4cTqJ1f5hRno'
+MPESA_CONSUMER_SECRET = 'LSleD8gtEG0RbrGFn5ljAqP4AdaA0DLcGSXALvL0AAbHm455qV9Js9p31n1qGs4A'
+MPESA_SHORTCODE = '174379' # Sandbox Till
+MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+MPESA_CALLBACK_URL = 'https://yourdomain.com/api/payments/callback/'
