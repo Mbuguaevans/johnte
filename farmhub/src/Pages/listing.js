@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useSWR from "swr";
 import { listingsAPI } from "../api";
 import "./listing.css";
 import LandDetail from "./LandDetail";
@@ -9,6 +10,8 @@ const COUNTIES = [
   "Laikipia", "Kilifi", "Uasin Gishu", "Machakos", "Kajiado",
   "Nyeri", "Muranga", "Kericho", "Bomet", "Kakamega", "Bungoma"
 ];
+
+const fetcher = (params) => listingsAPI.getAll(params);
 
 const CountdownTimer = ({ expiryDate }) => {
   const [timeLeft, setTimeLeft] = useState("");
@@ -43,8 +46,6 @@ const CountdownTimer = ({ expiryDate }) => {
 };
 
 export default function Listings() {
-  const [lands, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedLand, setSelectedLand] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   
@@ -59,27 +60,15 @@ export default function Listings() {
 
   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
-  const fetchListings = async () => {
-    setLoading(true);
-    try {
-      const data = await listingsAPI.getAll({
-        search,
-        county,
-        sort,
-        amenities,
-        min_acres: minAcres,
-      });
-      setListings(data);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    } finally {
-      setLoading(false);
+  // Real-time fetching with SWR
+  const { data: lands = [], error, isLoading, mutate } = useSWR(
+    ['listings', county, sort, amenities, minAcres, search],
+    () => fetcher({ search, county, sort, amenities, min_acres: minAcres }),
+    { 
+      refreshInterval: 5000, // Re-fetch every 5 seconds
+      revalidateOnFocus: true // Re-fetch when the tab is clicked back
     }
-  };
-
-  useEffect(() => {
-    fetchListings();
-  }, [county, sort, amenities, minAcres]);
+  );
 
   const toggleAmenity = (amenity) => {
     // Toggle amenity in filter list
@@ -94,7 +83,7 @@ export default function Listings() {
   };
 
   if (selectedLand) {
-    return <LandDetail land={selectedLand} onBack={() => { setSelectedLand(null); fetchListings(); }} />;
+    return <LandDetail land={selectedLand} onBack={() => { setSelectedLand(null); mutate(); }} />;
   }
 
   return (
@@ -200,10 +189,10 @@ export default function Listings() {
                   style={{outline: 'none'}}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && fetchListings()}
+                  onKeyDown={(e) => e.key === 'Enter' && mutate()}
                 />
               </div>
-              <button className="btn btn-success fw-bold px-4" onClick={fetchListings}>Search</button>
+              <button className="btn btn-success fw-bold px-4" onClick={() => mutate()}>Search</button>
           </div>
 
           <div className="top-bar">
@@ -230,7 +219,7 @@ export default function Listings() {
             </div>
           </div>
 
-          {loading ? (
+          {isLoading && lands.length === 0 ? (
             <div className="text-center py-5">
               <div className="spinner-border text-success"></div>
               <p className="mt-3">Scanning for best land deals...</p>
