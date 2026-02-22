@@ -49,7 +49,7 @@ const Navbar = ({ onProfileClick }) => {
                 <a href="#features">Features</a>
                 <a href="#contact">Contact</a>
               </>
-            ) : (
+            ) : (['/login', '/register'].includes(location.pathname) ? null : (
               <>
                 <a 
                   href="#" 
@@ -67,7 +67,7 @@ const Navbar = ({ onProfileClick }) => {
                   About Us
                 </a>
               </>
-            )}
+            ))}
           </nav>
 
           {/* User Profile / Auth Area */}
