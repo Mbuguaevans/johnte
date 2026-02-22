@@ -42,7 +42,7 @@ const Navbar = ({ onProfileClick }) => {
           </div>
 
           {/* Navigation Links */}
-          <nav className={`nav-links d-none d-md-flex ${!isScrolled && isTransparentPage ? 'links-white' : ''}`}>
+          <nav className={`nav-links d-flex ${!isScrolled && isTransparentPage ? 'links-white' : ''}`}>
             {location.pathname === '/' ? (
               <>
                 <a href="#home">Home</a>

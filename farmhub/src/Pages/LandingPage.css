@@ -70,6 +70,28 @@
   gap: 30px;
 }
 
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 12px;
+  }
+  .nav-links a {
+    font-size: 12px;
+  }
+  .header-right {
+    gap: 8px;
+  }
+  .logo {
+    font-size: 18px;
+  }
+  .btn-signup {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+  .btn-login {
+    font-size: 12px;
+  }
+}
+
 .nav-links a {
   text-decoration: none;
   color: #333;
