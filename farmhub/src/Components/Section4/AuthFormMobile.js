@@ -40,11 +40,11 @@ const AuthFormMobile = ({ initialMode = 'login' }) => {
     setLoading(true);
     setError('');
     try {
-      const tokenRes = await axios.post('http://127.0.0.1:8000/api/auth/login/', loginData);
+      const tokenRes = await axios.post('https://mbuguaevans1.pythonanywhere.com/api/auth/login/', loginData);
       const { access, refresh } = tokenRes.data;
       sessionStorage.setItem('access_token', access);
       sessionStorage.setItem('refresh_token', refresh);
-      const profileRes = await axios.get('http://127.0.0.1:8000/api/auth/profile/', {
+      const profileRes = await axios.get('https://mbuguaevans1.pythonanywhere.com/api/auth/profile/', {
         headers: { Authorization: `Bearer ${access}` },
       });
       sessionStorage.setItem('user', JSON.stringify(profileRes.data));
@@ -70,7 +70,7 @@ const AuthFormMobile = ({ initialMode = 'login' }) => {
       Object.keys(registerData).forEach(key => {
         if (registerData[key]) formData.append(key, registerData[key]);
       });
-      const response = await axios.post('http://127.0.0.1:8000/api/auth/register/', formData);
+      const response = await axios.post('https://mbuguaevans1.pythonanywhere.com/api/auth/register/', formData);
       sessionStorage.setItem('access_token', response.data.tokens.access);
       sessionStorage.setItem('refresh_token', response.data.tokens.refresh);
       sessionStorage.setItem('user', JSON.stringify(response.data.user));

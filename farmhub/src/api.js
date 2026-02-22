@@ -4,7 +4,7 @@
 // Import this in any component that needs real data.
 // ─────────────────────────────────────────────────────────
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'https://mbuguaevans1.pythonanywhere.com/api';
 
 // Always attach the JWT token from sessionStorage
 const authHeaders = () => ({

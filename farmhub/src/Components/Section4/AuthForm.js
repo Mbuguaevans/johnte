@@ -76,7 +76,7 @@ const AuthForm = ({ initialMode = 'login' }) => {
     setSuccess('');
 
     try {
-      const tokenRes = await axios.post('http://127.0.0.1:8000/api/auth/login/', {
+      const tokenRes = await axios.post('https://mbuguaevans1.pythonanywhere.com/api/auth/login/', {
         username: loginData.username,
         password: loginData.password,
       });
@@ -85,7 +85,7 @@ const AuthForm = ({ initialMode = 'login' }) => {
       sessionStorage.setItem('access_token',  access);
       sessionStorage.setItem('refresh_token', refresh);
 
-      const profileRes = await axios.get('http://127.0.0.1:8000/api/auth/profile/', {
+      const profileRes = await axios.get('https://mbuguaevans1.pythonanywhere.com/api/auth/profile/', {
         headers: { Authorization: `Bearer ${access}` },
       });
       sessionStorage.setItem('user', JSON.stringify(profileRes.data));
@@ -129,7 +129,7 @@ const AuthForm = ({ initialMode = 'login' }) => {
       }
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/auth/register/',
+        'https://mbuguaevans1.pythonanywhere.com/api/auth/register/',
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

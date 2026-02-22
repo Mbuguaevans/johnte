@@ -65,7 +65,7 @@ export default function Listings() {
     ['listings', county, sort, amenities, minAcres, search],
     () => fetcher({ search, county, sort, amenities, min_acres: minAcres }),
     { 
-      refreshInterval: 5000, // Re-fetch every 5 seconds
+      refreshInterval: 10800000, // Re-fetch every 3 hours
       revalidateOnFocus: true // Re-fetch when the tab is clicked back
     }
   );
